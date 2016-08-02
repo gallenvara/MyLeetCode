@@ -27,15 +27,7 @@ public class Solution {
             this.x = x;
             this.y = y;
         }
-    @Override
-    public boolean equals(Object others) {
-        Point other = (Point) others;
-        return (this.val == other.val && this.x == other.x && this.y == other.y);
-    }
-    @Override
-    public int hashCode() {
-        return 1;
-    }
+
     }
     public int kthSmallest(int[][] matrix, int k) {
         int[][] flag = new int[matrix.length][matrix.length];
@@ -49,18 +41,13 @@ public class Solution {
         pq.offer(new Point(matrix[0][0], 0, 0));
         for(int i = 1; i < k; i++) {
             Point p = pq.poll();
-            flag[p.x][p.y] = 1;
             if (p.x+1 < matrix.length && flag[p.x+1][p.y] == 0) {
-                Point down = new Point(matrix[p.x+1][p.y], p.x+1, p.y);
-                if (!pq.contains(down)) {
-                    pq.offer(down);
-                }
+                pq.offer(new Point(matrix[p.x+1][p.y], p.x+1, p.y));
+                flag[p.x+1][p.y] = 1;
             }
             if (p.y+1 < matrix.length && flag[p.x][p.y+1] == 0) {
-                Point right = new Point(matrix[p.x][p.y+1], p.x, p.y+1);
-                if (!pq.contains(right)) {
-                    pq.offer(right);
-                }
+                pq.offer(new Point(matrix[p.x][p.y+1], p.x, p.y+1));
+                flag[p.x][p.y+1] = 1;
             }
         }
         return pq.poll().val;
